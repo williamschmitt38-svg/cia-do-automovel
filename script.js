@@ -23,8 +23,8 @@ const vehicles=[
 {code:"378E35EFBF",brand:"Toyota",model:"Hilux",version:"2.8 SRV 4X4 DIESEL AUT",price:195000,year:2020,km:132000,fuel:"Diesel",gear:"Automático",state:"Usado",tag:"",super:true,body:"Pickup",img:"https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80"}
 ];
 const brands=["Fiat","Hyundai","Nissan","Peugeot","Honda","Citroen","Renault","Volkswagen","Ford","Chevrolet","Jeep","Toyota","Mitsubishi","BMW","Kia","Mercedes-Benz","BYD","Chrysler"];
-const brandDomains={Fiat:"fiat.com",Hyundai:"hyundai.com",Nissan:"nissan-global.com",Peugeot:"peugeot.com",Honda:"honda.com",Citroen:"citroen.com",Renault:"renault.com",Volkswagen:"vw.com",Ford:"ford.com",Chevrolet:"chevrolet.com",Jeep:"jeep.com",Toyota:"toyota.com",Land Rover:"landrover.com",Troller:"troller.com.br",Suzuki:"suzuki.com",Dodge:"dodge.com",Kia:"kia.com",Mercedes:"mercedes-benz.com",BYD:"byd.com",Chrysler:"chrysler.com",Harley:"harley-davidson.com",Mitsubishi:"mitsubishi-motors.com",BMW:"bmw.com",Kia:"kia.com",Mercedes:"mercedes-benz.com",BYD:"byd.com",Chrysler:"chrysler.com",Yamaha:"yamaha.com",Harley:"harley-davidson.com"};
-const logoURL=b=>`https://logo.clearbit.com/${brandDomains[b]}?size=128`;function slugOf(b){var m={"Mercedes-Benz":"mercedes","Land Rover":"landrover","Harley-Davidson":"harleydavidson"};return m[b]||b.toLowerCase().replace(/[^a-z0-9]/g,"")}
+const brandDomains={"Fiat":"fiat.com","Hyundai":"hyundai.com","Nissan":"nissan-global.com","Peugeot":"peugeot.com","Honda":"honda.com","Citroen":"citroen.com","Renault":"renault.com","Volkswagen":"vw.com","Ford":"ford.com","Chevrolet":"chevrolet.com","Jeep":"jeep.com","Toyota":"toyota.com","Land Rover":"landrover.com","Troller":"troller.com.br","Suzuki":"suzuki.com","Dodge":"dodge.com","Kia":"kia.com","Mercedes":"mercedes-benz.com","Mercedes-Benz":"mercedes-benz.com","BYD":"byd.com","Chrysler":"chrysler.com","Harley":"harley-davidson.com","Harley-Davidson":"harley-davidson.com","Mitsubishi":"mitsubishi-motors.com","BMW":"bmw.com","Yamaha":"yamaha.com"};
+const logoURL=b=>{const d=brandDomains[b]||((b||"").toLowerCase().replace(/[^a-z0-9]/g,"")+".com");return `https://logo.clearbit.com/${d}?size=128`;};function slugOf(b){var m={"Mercedes-Benz":"mercedes","Land Rover":"landrover","Harley-Davidson":"harleydavidson"};return m[b]||b.toLowerCase().replace(/[^a-z0-9]/g,"")}
 let favs=new Set();try{favs=new Set(JSON.parse(localStorage.getItem("cia_favs")||"[]"))}catch(e){favs=new Set()}
 let estadoFiltro="todos";
 
@@ -60,7 +60,7 @@ function card(v){
   const priceTxt=v.price>0?fmt(v.price):'R$ 0,00 <small>Sob Consulta</small>';
   const etq=v.super?'<span class="badge-etq">Super Oferta</span>':(v.tag?`<span class="badge-etq">${v.tag}</span>`:'');
   return `<div class="card" data-card="${v.code}">
-   <div class="card-img" data-det-img="${v.code}"><img loading="lazy" src="${v.img}" alt="${v.brand} ${v.model}">
+   <div class="card-img" data-det-img="${v.code}"><img loading="lazy" src="${v.img}" alt="${v.brand} ${v.model}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80'">
    <span class="badge">${v.state}</span>${etq}
    <button class="fav ${isFav?"on":""}" data-fav="${v.code}" aria-label="Favoritar">${isFav?"❤":"♡"}</button></div>
    <div class="card-body"><span class="code"><b>${v.state}</b> &nbsp; Código: ${v.code}</span>
@@ -197,4 +197,5 @@ if(sc)sc.onclick=()=>{
 // reveal
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("vis")}),{threshold:.12});
 document.querySelectorAll(".reveal,.card").forEach(el=>io.observe(el));
-(function(){try{var mp=Math.max.apply(null,vehicles.map(function(v){return v.price}));var mx=Math.ceil((mp+1)/10000)*10000;var sv=$("fValor");sv.max=mx;sv.value=mx;var mk=Math.max.apply(null,vehicles.map(function(v){return v.km}));var kx=Math.max(Math.ceil((mk+1)/5000)*5000,50000);var sk=$("fKm");sk.max=kx;sk.value=kx;}catch(e){}})();try{renderBrands()}catch(e){}try{syncModeloOptions()}catch(e){}try{applyFilters()}catch(e){try{const vg=$("vehicleGrid");if(vg)vg.innerHTML=vehicles.map(card).join("")}catch(_){}}
+(function(){try{var mp=Math.max.apply(null,vehicles.map(function(v){return v.price}));var mx=Math.ceil((mp+1)/10000)*10000;var sv=$("fValor");if(sv){sv.max=mx;sv.value=mx;}var mk=Math.max.apply(null,vehicles.map(function(v){return v.km}));var kx=Math.max(Math.ceil((mk+1)/5000)*5000,50000);var sk=$("fKm");if(sk){sk.max=kx;sk.value=kx;}}catch(e){}})();try{renderBrands()}catch(e){}try{syncModeloOptions()}catch(e){}try{applyFilters()}catch(e){try{const vg=$("vehicleGrid");if(vg)vg.innerHTML=vehicles.map(card).join("")}catch(_){}}
+setTimeout(()=>{document.querySelectorAll('.reveal').forEach(el=>el.classList.add('vis'));try{if(!document.getElementById('vehicleGrid').innerHTML){document.getElementById('vehicleGrid').innerHTML=vehicles.map(card).join('')}if(!document.getElementById('destaqueGrid').innerHTML){document.getElementById('destaqueGrid').innerHTML=vehicles.filter(x=>x.super).concat(vehicles.slice(0,3)).slice(0,3).map(card).join('');bindCards()}}catch(e){}},1500);
