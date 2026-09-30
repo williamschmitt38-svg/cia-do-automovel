@@ -167,3 +167,10 @@ footer h4{color:#fff;margin-bottom:8px}
 .reveal.vis{opacity:1;transform:none}
 @media(max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}.estoque-wrap{grid-template-columns:1fr}.rev-grid{grid-template-columns:1fr}.sobre-inner,.loc-inner,.foot-grid,.det-grid{grid-template-columns:1fr}.nav{display:none}.menu-toggle{display:block}.topbar-right{display:none}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}.hero{min-height:560px}}
+/* FIX cards visiveis + responsivo */
+#vehicleGrid,#destaqueGrid{min-height:200px}
+.grid-print{grid-template-columns:repeat(3,1fr)}
+@media(max-width:960px){.grid-print{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid-print{grid-template-columns:1fr}}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.no-js .reveal{opacity:1!important;transform:none!important}
